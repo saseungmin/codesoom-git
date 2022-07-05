@@ -80,3 +80,56 @@ a.txt의 hash값으로 내용을 찾는다. 마찬가지로 b, c, d, e.txt의 ha
 
 한가지 신경써야할 건 기존의 DB는 insert, select, update, delete가 다 되지만, git의 db는 insert, select만 가능하다. 그래서 git의 db로 들어간 이상 삭제되거나 변경되지 않기때문에 안전하게 보관된다. (일부로 git의 db를 날리지 않는 이상)   
 그렇기 때문에 commit hash만 알고 있으면 언제든지 복원할 수 있다.   
+
+```
+> git cat-file -p 9af46
+tree 9ec3138d35c9ef44dcb5de383efa95740ad1d122 => git commit으로 스냅샷을 찍었던 프로젝트 전체의 hash값
+parent 0cb437be3dc888c45564a586720b9c5f9ccbf27c
+author saseungmin <dbd02169@naver.com> 1657027373 +0900 => metadata
+committer saseungmin <dbd02169@naver.com> 1657027373 +0900 => metadata
+
+git commit lecture 1 test
+```
+
+tree를 다시 검색
+
+```
+> git cat-file -p a1a972b636028c21434d4e451d960930fb77889a
+100644 blob f28d007a5d4769c93baa485a12b345d578200409    README.md
+040000 tree 6797b0bfef3c78dd6191b13c647f1370a2f1fa03    res
+040000 tree 323696e217f6b124878abb3a1636ba18b145cb5b    src
+```
+
+res의 정보
+
+```
+git cat-file -p 6797b0bfef3c78dd6191b13c647f1370a2f1fa03
+100644 blob 4bcfe98e640c8284511312660fb8709b0afa888e    d.txt
+100644 blob d905d9da82c97264ab6f4920e20242e088850ce9    e.txt
+```
+
+d.txt를 검색
+
+```
+> git cat-file -p 4bcfe98e640c8284511312660fb8709b0afa888e
+d
+```
+
+a.txt 와 c.txt의 내용이 같기 떄문에 hash값이 같다
+
+```
+100644 blob e61ef7b965e17c62ca23b6ff5f0aaf09586e10e9    a.txt
+100644 blob e61ef7b965e17c62ca23b6ff5f0aaf09586e10e9    c.txt
+```
+
+만약에 res와 src 폴더를 삭제한 경우
+
+```bash
+> rm -rf ./res ./src
+```
+
+git log로 commit 내용을 확인할 수 있다 commit의 hash값을 사용해 복원할 수 있다.
+
+```bash
+> git reset --hard 9af462f133b2b2dc8351348ae35f0e717e64ee14
+```
