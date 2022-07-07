@@ -135,26 +135,39 @@ git log로 commit 내용을 확인할 수 있다 commit의 hash값을 사용해 
 ```
 
 ### Git Objects
-Git은 단순한 Key-value 데이터 저장소입니다. Git에 저장되는 데이터에는 3가지 객체가 있다.
+Git은 단순한 Key-value 데이터 저장소. Git에 저장되는 데이터에는 3가지 객체가 있다.
 
-blob
-blob은 파일의 내용을 담고 있는 객체입니다. 파일의 이름은 담고 있지 않다.
+blob   
+blob은 파일의 내용을 담고 있는 객체. 파일의 이름은 담고 있지 않다.
 
-tree
-tree는 디렉터리를 저장하는 객체입니다. tree에서 파일의 이름을 저장한다.
+tree   
+tree는 디렉터리를 저장하는 객체. tree에서 파일의 이름을 저장한다.
 
-commit
+commit   
 commit은 프로젝트의 루트 트리의 해시값, 부모 commit의 해시값 그리고 메타데이터를 저장한다.
 
-git diff
+#### git diff   
 
 ```
 $ git diff <commit> <other commit>
 ```
 
 diff명령어는 커밋과 커밋 사이 혹은 현재 작업 중인 디렉터리에서 변경사항을 출력해 주는 명령어이다.
+깃의 db에서 두 커밋을 조회하면 root 먼저 비교한다. 같으면 끝나게되고 두개가 같지 않으면, 자식을 조회한다. 그 자식을 조회할 때 그 자식의 hash가 같으면 조회를 하지 않고, 다를 경우에만 다시 그 자식을 비교한다.   
 
-git add
+만약에 d.txt의 내용이 d에서 ddd로 변경되면 아래와 같이 나타난다. 
+
+```
+d.txt
+- d
++ ddd
+```
+
+이러한 비교로 인해 빠른 퍼포먼스를 낼 수 있다. 
+
+git은 전체 프로젝트 hash값 하나만으로 특정 순간을 기록만해두면 언제든지 안심하고 쉽게 돌아갈 수 있다.
+
+#### git add
 
 ```
 $ git add <pathspec>
@@ -162,7 +175,7 @@ $ git add <pathspec>
 
 add명령어는 커밋을 위해 작업 중인 트리에서 현재 내용들을 index에 추가한다.
 
-git restore
+#### git restore
 
 ```
 $ git restore <pathspec>
@@ -170,7 +183,7 @@ $ git restore <pathspec>
 
 restore명령어는 작업중인 트리에서 파일을 복원하는 명령어이다.
 
-git show
+#### git show
 
 ```
 $ git show <object>
@@ -178,7 +191,7 @@ $ git show <object>
 
 show명령어는 blobs, trees 그리고 커밋의 내용을 출력해 주는 명령어이다.
 
-git log
+#### git log
 
 ```
 $ git log
@@ -186,7 +199,7 @@ $ git log
 
 log명령어는 커밋 로그를 출력해 주는 명령어이다.
 
-git ls-files
+#### git ls-files
 
 ```
 $ git ls-files
